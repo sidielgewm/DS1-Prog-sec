@@ -1,0 +1,88 @@
+def Introduire_pwd():
+    import hashlib
+    import maskpass
+    import string
+    while True :
+        p=maskpass.askpass()
+        if len(p)==8:
+            if any(c in string.digits for c in p):
+                if any(c in string.ascii_uppercase for c in p):
+                    if any(c in string.ascii_lowercase for c in p):
+                        if any(c in string.punctuation for c in p):
+                            p=hashlib.sha256(p.encode()).hexdigest()
+                            return p
+                        else :
+                            print("SVP au min un caractere special")
+                    else :
+                        print("SVP au min un caractere minuscule")
+                else :
+                    print("SVP au min un caractere majuscule")
+            else :
+                print("SVP au min un chiffre")
+        else :
+            print("SVP le mot de passe est de 8 caractères")
+
+import art
+import colorama
+print(colorama.Fore.RED)
+print(art.text2art("Cyber"))
+print(colorama.Fore.MAGENTA)
+print("Enregistrement ")
+
+print("\t Email ")
+print("\t Pwd ")
+#Introduire_email()
+y=Introduire_pwd()
+with open('cyber.txt','w') as f1 :
+    f1.write(f"Le password haché est :{y}")
+with open('cyber.txt','r') as f1 :
+    print(f1.readline().split(':')[1])
+    print(y)
+    if f1.readline().split(':')[1]==y:
+        print("\nBienvenu : ......")
+    else :
+        print("Merci de vous enregistrer avant l'authentification")
+
+import hashlib
+import maskpass
+import colorama
+
+def Authentifier():
+    print(colorama.Fore.MAGENTA)
+    print("Authentification")
+
+    # Demandez à l'utilisateur d'entrer son mot de passe.
+    entered_password = maskpass.askpass()
+
+    # Hachez le mot de passe entré pour le comparer au mot de passe stocké.
+    entered_password_hash = hashlib.sha256(entered_password.encode()).hexdigest()
+
+    with open('cyber.txt', 'r') as f1:
+        stored_password = f1.readline().split(':')[1].strip()
+
+    if stored_password == entered_password_hash:
+        print("\nBienvenu : ......")
+    else:
+        print("L'authentification a échoué. Merci de vous enregistrer avant de vous connecter.")
+
+
+if __name__ == "__main__":
+    import art
+
+    print(colorama.Fore.RED)
+    print(art.text2art("Cyber"))
+
+    while True:
+        print("\n1. Enregistrement")
+        print("\n2. Authentification")
+        print("\n3. Quitter")
+        choice = input("Sélectionnez une option (1/2/3) : ")
+
+        if choice == "1":
+            Introduire_pwd()
+        elif choice == "2":
+            Authentifier()
+        elif choice == "3":
+            break
+        else:
+            print("Option invalide. Veuillez sélectionner une option valide (1/2/3).")
